@@ -28,7 +28,6 @@ body{
     position: fixed;
     top: -10px;
     color: white;
-    font-size: 1em;
     animation: fall linear infinite;
     pointer-events:none;
 }
@@ -99,7 +98,6 @@ h1{
 .success{
     font-size:24px;
     line-height:1.6;
-    animation: fadeIn 1.5s ease;
 }
 .gift-img{
     margin-top:25px;
@@ -110,6 +108,11 @@ h1{
 </style>
 </head>
 <body>
+
+<!-- 🎶 МУЗЫКА -->
+<audio id="music" loop>
+    <source src="https://cdn.pixabay.com/audio/2022/12/20/audio_3b6e7cfe5f.mp3" type="audio/mpeg">
+</audio>
 
 <div class="panel" id="game">
     <h1>ПАРОЛЬ</h1>
@@ -132,12 +135,18 @@ h1{
 </div>
 
 <script>
-/* 🎄 ЛОГИКА ДЛЯ IPHONE */
 const letters = document.querySelectorAll('.letters span');
 const slots = document.querySelectorAll('.slot');
+const music = document.getElementById('music');
 let index = 0;
+let musicStarted = false;
 
 function placeLetter(letter){
+    if(!musicStarted){
+        music.play().catch(()=>{});
+        musicStarted = true;
+    }
+
     if(index < slots.length){
         slots[index].textContent = letter.textContent;
         index++;
@@ -172,14 +181,14 @@ function check(){
 }
 
 /* ❄️ СНЕГ */
-for(let i=0;i<40;i++){
+for(let i=0;i<35;i++){
     const s=document.createElement('div');
     s.className='snowflake';
     s.textContent='❄';
     s.style.left=Math.random()*100+'vw';
-    s.style.animationDuration=3+Math.random()*5+'s';
+    s.style.animationDuration=4+Math.random()*6+'s';
     s.style.opacity=Math.random();
-    s.style.fontSize=10+Math.random()*20+'px';
+    s.style.fontSize=12+Math.random()*18+'px';
     document.body.appendChild(s);
 }
 </script>

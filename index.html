@@ -2,58 +2,110 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Квест</title>
+<title>Новогодний подарок</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
 body{
     margin:0;
     font-family:Arial, sans-serif;
-    background:#0e0e0e;
-    color:#eaeaea;
+    background: linear-gradient(#00111f, #022b45);
+    color:#ffffff;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
+    overflow:hidden;
 }
+
+/* ❄️ СНЕГ */
+.snowflake {
+    position: fixed;
+    top: -10px;
+    color: white;
+    font-size: 1em;
+    animation: fall linear infinite;
+    pointer-events:none;
+}
+@keyframes fall {
+    to { transform: translateY(110vh); }
+}
+
+/* 🎄 ПАНЕЛЬ */
 .panel{
-    background:#1a1a1a;
-    border:2px solid #444;
-    padding:30px 40px;
-    border-radius:14px;
-    box-shadow:0 0 40px #000;
+    background: rgba(0,0,0,0.6);
+    border:2px solid rgba(255,255,255,0.2);
+    padding:30px 35px;
+    border-radius:18px;
+    box-shadow:0 0 40px rgba(0,0,0,0.8);
     text-align:center;
     max-width:720px;
+    animation: fadeIn 1.2s ease;
 }
+
+@keyframes fadeIn {
+    from { opacity:0; transform: scale(0.9); }
+    to { opacity:1; transform: scale(1); }
+}
+
 h1{
     letter-spacing:4px;
     margin-bottom:20px;
 }
+
+/* 🔤 БУКВЫ */
 .letters span{
-    display:inline-block;
-    background:#2a2a2a;
-    border:1px solid #777;
-    border-radius:8px;
-    padding:12px 16px;
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    background:#123;
+    border:1px solid #6cf;
+    border-radius:12px;
+    width:60px;
+    height:60px;
     margin:8px;
-    font-size:30px;
+    font-size:32px;
     cursor:pointer;
     user-select:none;
+    transition: transform 0.15s, background 0.15s;
 }
+
+.letters span:active{
+    transform: scale(0.9);
+    background:#1a4b7a;
+}
+
+/* 🧩 ЯЧЕЙКИ */
 .slots{
     margin-top:25px;
 }
 .slot{
-    display:inline-block;
-    width:54px;
-    height:54px;
-    border:2px dashed #666;
+    display:inline-flex;
+    justify-content:center;
+    align-items:center;
+    width:58px;
+    height:58px;
+    border:2px dashed #9cf;
     margin:6px;
     font-size:32px;
-    line-height:54px;
 }
+
+/* 🎁 ФИНАЛ */
 .success{
     font-size:24px;
-    color:#00ff88;
     line-height:1.6;
+    animation: fadeIn 1.5s ease;
+}
+.gift-img{
+    margin-top:25px;
+    max-width:100%;
+    border-radius:16px;
+    box-shadow:0 0 25px rgba(255,255,255,0.4);
 }
 </style>
 </head>
@@ -80,18 +132,25 @@ h1{
 </div>
 
 <script>
+/* 🎄 ЛОГИКА ДЛЯ IPHONE */
 const letters = document.querySelectorAll('.letters span');
 const slots = document.querySelectorAll('.slot');
 let index = 0;
 
+function placeLetter(letter){
+    if(index < slots.length){
+        slots[index].textContent = letter.textContent;
+        index++;
+        check();
+    }
+}
+
 letters.forEach(letter=>{
-    letter.addEventListener('click', ()=>{
-        if(index < slots.length){
-            slots[index].textContent = letter.textContent;
-            index++;
-            check();
-        }
-    });
+    letter.addEventListener('click', ()=>placeLetter(letter));
+    letter.addEventListener('touchstart', e=>{
+        e.preventDefault();
+        placeLetter(letter);
+    }, {passive:false});
 });
 
 function check(){
@@ -100,10 +159,28 @@ function check(){
     if(result === 'шлёпа'){
         document.body.innerHTML = `
         <div class="panel success">
-            Я поздравляю тебя с Новым годом и хочу подарить тебе хороший подарок:<br><br>
-            <strong>4 месяца занятий английским языком в мини-группе от London-Express!!!</strong>
+            🎄 Я поздравляю тебя с Новым годом!<br><br>
+            Я хочу подарить тебе особенный подарок:<br><br>
+            <strong>4 месяца занятий английским языком<br>
+            в мини-группе от London-Express</strong> 🎁<br><br>
+
+            <img class="gift-img"
+            src="https://images.unsplash.com/photo-1607082349566-187342175e2f"
+            alt="Новогодний подарок">
         </div>`;
     }
+}
+
+/* ❄️ СНЕГ */
+for(let i=0;i<40;i++){
+    const s=document.createElement('div');
+    s.className='snowflake';
+    s.textContent='❄';
+    s.style.left=Math.random()*100+'vw';
+    s.style.animationDuration=3+Math.random()*5+'s';
+    s.style.opacity=Math.random();
+    s.style.fontSize=10+Math.random()*20+'px';
+    document.body.appendChild(s);
 }
 </script>
 

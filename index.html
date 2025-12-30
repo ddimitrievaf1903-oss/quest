@@ -2,15 +2,10 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Новогодний вход</title>
+<title>Новогодний квест</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
-}
-
 body{
     margin:0;
     font-family:Arial, sans-serif;
@@ -22,153 +17,181 @@ body{
     height:100vh;
     overflow:hidden;
 }
-
-/* ❄️ СНЕГ */
-.snowflake{
-    position:fixed;
-    top:-10px;
-    color:white;
-    animation:fall linear infinite;
-    pointer-events:none;
-}
-@keyframes fall{
-    to{transform:translateY(110vh);}
-}
-
-/* 🎄 ПАНЕЛЬ */
 .panel{
-    background:rgba(0,0,0,0.65);
-    border:2px solid rgba(255,255,255,0.25);
-    padding:35px 40px;
+    background:rgba(0,0,0,0.7);
+    padding:30px 40px;
     border-radius:20px;
+    max-width:900px;
+    box-shadow:0 0 40px rgba(0,0,0,.8);
     text-align:center;
-    box-shadow:0 0 45px rgba(0,0,0,0.8);
     animation:fade 1s ease;
 }
 @keyframes fade{
-    from{opacity:0; transform:scale(0.9);}
-    to{opacity:1; transform:scale(1);}
+    from{opacity:0; transform:scale(.9)}
+    to{opacity:1; transform:scale(1)}
 }
-
-h1{
-    margin-bottom:25px;
-    letter-spacing:3px;
+button{
+    padding:12px 18px;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    cursor:pointer;
 }
-
-/* 👤 ВВОД */
-.user-line{
-    font-size:22px;
-    margin-bottom:20px;
+.option{
+    display:inline-block;
+    padding:10px 16px;
+    margin:6px;
+    border-radius:8px;
+    border:2px solid #9cf;
+    cursor:pointer;
 }
-
-.inputs{
+.correct{background:#1e7f4f;border-color:#1e7f4f;}
+.wrong{background:#7f1e1e;border-color:#7f1e1e;}
+.small-btn{
+    margin-top:20px;
+    font-size:12px;
+    opacity:.7;
+}
+.gift{
+    width:200px;
+    height:200px;
+    background:#c00;
+    border-radius:20px;
+    margin:30px auto;
     display:flex;
     justify-content:center;
-    gap:10px;
+    align-items:center;
+    font-size:80px;
+    cursor:pointer;
+    animation:pulse 1.5s infinite;
 }
-
-.inputs input{
-    width:50px;
-    height:60px;
-    font-size:32px;
-    text-align:center;
-    border-radius:10px;
-    border:2px solid #9cf;
-    background:#012;
-    color:#fff;
-    outline:none;
-    text-transform:uppercase;
+@keyframes pulse{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.05)}
+    100%{transform:scale(1)}
 }
-
-.inputs input:focus{
-    border-color:#fff;
-    box-shadow:0 0 10px #9cf;
+.spark{
+    position:fixed;
+    font-size:20px;
+    animation:fall 3s linear;
 }
-
-/* 🎁 ФИНАЛ */
-.success{
-    font-size:24px;
-    line-height:1.6;
-}
-.gift-img{
-    margin-top:25px;
-    max-width:100%;
-    border-radius:18px;
-    box-shadow:0 0 25px rgba(255,255,255,0.4);
+@keyframes fall{
+    to{transform:translateY(110vh); opacity:0;}
 }
 </style>
 </head>
 <body>
 
-<div class="panel" id="login">
-    <h1>ВХОД</h1>
-
-    <div class="user-line">
-        Пользователь ▢▢▢▢▢▢
-    </div>
-
-    <div class="inputs">
-        <input maxlength="1" inputmode="text">
-        <input maxlength="1" inputmode="text">
-        <input maxlength="1" inputmode="text">
-        <input maxlength="1" inputmode="text">
-        <input maxlength="1" inputmode="text">
-        <input maxlength="1" inputmode="text">
-    </div>
+<div class="panel" id="step1">
+    <h2>Для получения подарка<br>пройдите лёгкий тест</h2>
+    <p id="timer">3</p>
 </div>
 
 <script>
-const inputs = document.querySelectorAll('.inputs input');
-const correct = 'ШЛЁПКА';
+let step1=document.getElementById('step1');
+let t=3;
+let timer=document.getElementById('timer');
+let interval=setInterval(()=>{
+    t--;
+    timer.textContent=t;
+    if(t===0){
+        clearInterval(interval);
+        showTest();
+    }
+},1000);
 
-inputs[0].focus();
+function showTest(){
+document.body.innerHTML=`
+<div class="panel" id="test">
+<h2>Мини-тест</h2>
 
-inputs.forEach((input, i)=>{
-    input.addEventListener('input', ()=>{
-        input.value = input.value.toUpperCase();
+<p>1. Large tech companies ... the <b>(...)</b>-plan office</p>
+<div data-q="1">
+<span class="option" data-a="wrong">internal</span>
+<span class="option" data-a="wrong">flexible</span>
+<span class="option" data-a="wrong">equal</span>
+<span class="option" data-a="correct">open</span>
+</div>
 
-        if(input.value && i < inputs.length - 1){
-            inputs[i+1].focus();
-        }
-        check();
-    });
+<p>2. Companies such as Apple ... were all <b>(...)</b></p>
+<div data-q="2">
+<span class="option" data-a="wrong">motivators</span>
+<span class="option" data-a="correct">innovators</span>
+<span class="option" data-a="wrong">disruptors</span>
+<span class="option" data-a="wrong">analysts</span>
+</div>
 
-    input.addEventListener('keydown', e=>{
-        if(e.key === 'Backspace' && !input.value && i > 0){
-            inputs[i-1].focus();
-        }
-    });
+<p>3. Companies offer good career <b>(...)</b></p>
+<div data-q="3">
+<span class="option" data-a="wrong">delivery</span>
+<span class="option" data-a="correct">development</span>
+<span class="option" data-a="wrong">induction</span>
+<span class="option" data-a="wrong">benchmarking</span>
+</div>
+
+<p>4. A good skills <b>(...)</b></p>
+<div data-q="4">
+<span class="option" data-a="wrong">method</span>
+<span class="option" data-a="wrong">motivation</span>
+<span class="option" data-a="correct">set</span>
+<span class="option" data-a="wrong">rapport</span>
+</div>
+
+<button id="next" disabled>Продолжить</button>
+
+<div>
+<button class="small-btn" onclick="showGift()">Я шлёпка, мне ещё учиться и учиться</button>
+</div>
+</div>
+`;
+
+let answers={};
+document.querySelectorAll('.option').forEach(o=>{
+o.onclick=()=>{
+    let parent=o.parentElement;
+    parent.querySelectorAll('.option').forEach(x=>x.classList.remove('correct','wrong'));
+    if(o.dataset.a==='correct'){
+        o.classList.add('correct');
+        answers[parent.dataset.q]=true;
+    }else{
+        o.classList.add('wrong');
+        answers[parent.dataset.q]=false;
+    }
+    checkAll();
+};
 });
-
-function check(){
-    let value = '';
-    inputs.forEach(i=>value += i.value);
-
-    if(value === correct){
-        document.body.innerHTML = `
-        <div class="panel success">
-            🎄 Я поздравляю тебя с Новым годом!<br><br>
-            Я хочу подарить тебе хороший подарок:<br><br>
-            <strong>4 месяца занятий английским языком<br>
-            в мини-группе от London-Express</strong> 🎁<br><br>
-
-            <img class="gift-img"
-            src="https://images.unsplash.com/photo-1607082349566-187342175e2f"
-            alt="Подарок">
-        </div>`;
+function checkAll(){
+    if(Object.values(answers).length===4 && Object.values(answers).every(v=>v)){
+        document.getElementById('next').disabled=false;
+        document.getElementById('next').onclick=showGift;
     }
 }
-
-/* ❄️ СНЕГ */
-for(let i=0;i<40;i++){
-    const s=document.createElement('div');
-    s.className='snowflake';
-    s.textContent='❄';
+}
+function showGift(){
+document.body.innerHTML=`
+<div class="panel">
+<h2>Ваш подарок 🎁</h2>
+<div class="gift" id="gift">🎁</div>
+</div>`;
+document.getElementById('gift').onclick=explode;
+}
+function explode(){
+document.body.innerHTML='';
+for(let i=0;i<60;i++){
+    let s=document.createElement('div');
+    s.className='spark';
+    s.textContent='✨';
     s.style.left=Math.random()*100+'vw';
-    s.style.animationDuration=4+Math.random()*6+'s';
-    s.style.opacity=Math.random();
-    s.style.fontSize=12+Math.random()*18+'px';
+    s.style.top='-10px';
     document.body.appendChild(s);
+}
+setTimeout(()=>{
+document.body.innerHTML=`
+<div class="panel">
+<h1>Для вас подарок!</h1>
+<h2>🎄 4 месяца занятий английским языком!!! 🎄</h2>
+</div>`;
+},3000);
 }
 </script>
 

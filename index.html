@@ -20,10 +20,10 @@ body{
 }
 .panel{
     background:rgba(0,0,0,.75);
-    padding:32px 36px;
+    padding:28px 30px;
     border-radius:22px;
     max-width:900px;
-    width:90%;
+    width:92%;
     box-shadow:0 0 40px rgba(0,0,0,.85);
     animation:fade 1s ease;
 }
@@ -46,21 +46,22 @@ body{
 /* 🔐 ВХОД */
 .login-title{
     text-align:center;
-    font-size:24px;
+    font-size:22px;
     letter-spacing:2px;
-    margin-bottom:18px;
+    margin-bottom:14px;
 }
 .inputs{
     display:flex;
     justify-content:center;
-    gap:12px;
+    gap:8px;
 }
 .inputs input{
-    width:58px;
-    height:70px;
-    font-size:34px;
+    width:48px;
+    height:60px;
+    font-size:28px;
+    line-height:60px;
     text-align:center;
-    border-radius:12px;
+    border-radius:10px;
     border:2px solid #9cf;
     background:#012;
     color:#fff;
@@ -74,34 +75,37 @@ body{
 
 /* ⏱ */
 .timer{
-    font-size:48px;
+    font-size:44px;
     margin-top:10px;
 }
 
 /* 🧠 ТЕСТ */
 .question{
-    margin-top:28px;
-    font-size:16px;
+    margin-top:26px;
+    font-size:15px;
     line-height:1.4;
 }
 .answers{
     display:flex;
     flex-wrap:wrap;
-    gap:10px;
-    margin-top:12px;
+    gap:8px;
+    margin-top:10px;
 }
 .option{
     padding:8px 12px;
-    font-size:14px;
+    font-size:13px;
     border-radius:8px;
     border:2px solid #9cf;
     cursor:pointer;
 }
-.correct{background:#1e7f4f;border-color:#1e7f4f}
-.wrong{background:#7f1e1e;border-color:#7f1e1e}
+.option.selected{
+    background:#c9a227;
+    border-color:#c9a227;
+    color:#000;
+}
 
 button{
-    margin-top:24px;
+    margin-top:22px;
     padding:12px 18px;
     border:none;
     border-radius:10px;
@@ -111,12 +115,12 @@ button{
 .small-btn{
     font-size:12px;
     opacity:.7;
-    margin-top:16px;
+    margin-top:14px;
 }
 
 /* 🎁 */
 .gift{
-    font-size:100px;
+    font-size:96px;
     text-align:center;
     cursor:pointer;
     animation:pulse 1.5s infinite;
@@ -133,7 +137,7 @@ button{
     text-align:center;
 }
 .final-box h1{
-    margin-bottom:16px;
+    margin-bottom:14px;
 }
 .final-box p{
     font-size:18px;
@@ -141,7 +145,7 @@ button{
 }
 .highlight{
     font-size:22px;
-    margin-top:14px;
+    margin-top:12px;
     color:#9cffd1;
 }
 </style>
@@ -219,63 +223,64 @@ document.body.innerHTML=`
 <div class="panel">
 <h2>Мини-тест</h2>
 
-<div class="question">
-1. Large tech companies tend to encourage staff to solve problems in teams that’s why the <b>(...)</b>-plan office has become popular once more.
-</div>
+<div class="question">1. Large tech companies tend to encourage staff to solve problems in teams that’s why the <b>(...)</b>-plan office has become popular once more.</div>
 <div class="answers" data-q="1">
-<div class="option" data-a="wrong">internal</div>
-<div class="option" data-a="wrong">flexible</div>
-<div class="option" data-a="wrong">equal</div>
-<div class="option" data-a="correct">open</div>
+<div class="option" data-correct="false">internal</div>
+<div class="option" data-correct="false">flexible</div>
+<div class="option" data-correct="false">equal</div>
+<div class="option" data-correct="true">open</div>
 </div>
 
-<div class="question">
-2. Companies such as Apple, Amazon and Google were all <b>(...)</b> of building businesses using technology.
-</div>
+<div class="question">2. Companies such as Apple, Amazon and Google were all <b>(...)</b> of building businesses using technology.</div>
 <div class="answers" data-q="2">
-<div class="option" data-a="wrong">motivators</div>
-<div class="option" data-a="correct">innovators</div>
-<div class="option" data-a="wrong">disruptors</div>
-<div class="option" data-a="wrong">analysts</div>
+<div class="option" data-correct="false">motivators</div>
+<div class="option" data-correct="true">innovators</div>
+<div class="option" data-correct="false">disruptors</div>
+<div class="option" data-correct="false">analysts</div>
 </div>
 
-<div class="question">
-3. When applying for a job, potential employees look for good career <b>(...)</b>.
-</div>
+<div class="question">3. When applying for a job, potential employees look for good career <b>(...)</b>.</div>
 <div class="answers" data-q="3">
-<div class="option" data-a="wrong">delivery</div>
-<div class="option" data-a="correct">development</div>
-<div class="option" data-a="wrong">induction</div>
-<div class="option" data-a="wrong">benchmarking</div>
+<div class="option" data-correct="false">delivery</div>
+<div class="option" data-correct="true">development</div>
+<div class="option" data-correct="false">induction</div>
+<div class="option" data-correct="false">benchmarking</div>
 </div>
 
-<div class="question">
-4. Many companies look for more than just excellent qualifications and a good skills <b>(...)</b>.
-</div>
+<div class="question">4. Many companies look for more than just excellent qualifications and a good skills <b>(...)</b>.</div>
 <div class="answers" data-q="4">
-<div class="option" data-a="wrong">method</div>
-<div class="option" data-a="wrong">motivation</div>
-<div class="option" data-a="correct">set</div>
-<div class="option" data-a="wrong">rapport</div>
+<div class="option" data-correct="false">method</div>
+<div class="option" data-correct="false">motivation</div>
+<div class="option" data-correct="true">set</div>
+<div class="option" data-correct="false">rapport</div>
 </div>
 
-<button id="next" disabled>Продолжить</button><br>
+<button onclick="validateTest()">Продолжить</button><br>
 <button class="small-btn" onclick="showGift()">Я шлёпка, мне ещё учиться и учиться</button>
 </div>`;
 
-let ok={};
 document.querySelectorAll('.option').forEach(o=>{
  o.onclick=()=>{
-  let p=o.parentElement;
-  p.querySelectorAll('.option').forEach(x=>x.classList.remove('correct','wrong'));
-  if(o.dataset.a==='correct'){o.classList.add('correct');ok[p.dataset.q]=1}
-  else{o.classList.add('wrong');ok[p.dataset.q]=0}
-  if(Object.values(ok).length===4&&Object.values(ok).every(v=>v)){
-   document.getElementById('next').disabled=false;
-   document.getElementById('next').onclick=showGift;
-  }
+  let parent=o.parentElement;
+  parent.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));
+  o.classList.add('selected');
  };
 });
+}
+
+function validateTest(){
+ let valid=true;
+ document.querySelectorAll('.answers').forEach(a=>{
+  const sel=a.querySelector('.selected');
+  if(!sel || sel.dataset.correct!=='true'){
+   valid=false;
+  }
+ });
+ if(valid){
+  showGift();
+ }else{
+  document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+ }
 }
 
 /* 🎁 */

@@ -56,14 +56,13 @@ body{
     gap:6px;
 }
 .inputs input{
-    width:44px;
-    height:56px;
-    font-size:22px;
+    width:42px;
+    height:54px;
+    font-size:20px;
     font-weight:600;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
+    padding-top:6px;
+    text-align:center;
 
     border-radius:10px;
     border:2px solid #9cf;
@@ -165,6 +164,7 @@ button{
 </div>
 
 <script>
+/* ❄️ СНЕГ */
 for(let i=0;i<40;i++){
  const s=document.createElement('div');
  s.className='snow';
@@ -176,6 +176,7 @@ for(let i=0;i<40;i++){
  document.body.appendChild(s);
 }
 
+/* 🔐 ВХОД */
 const inputs=document.querySelectorAll('.inputs input');
 const correct='ШЛЁПКА';
 inputs[0].focus();
@@ -204,7 +205,115 @@ function checkLogin(){
  }
 }
 
-/* дальше код без изменений */
+/* ⏱ ТАЙМЕР */
+function showTimer(){
+ document.body.innerHTML=`
+ <div class="panel" style="text-align:center">
+ <h2>Для получения подарка<br>пройдите лёгкий тест</h2>
+ <div class="timer" id="t">3</div>
+ </div>`;
+ let t=3;
+ let i=setInterval(()=>{
+  t--;
+  document.getElementById('t').textContent=t;
+  if(t===0){clearInterval(i);showTest();}
+ },1000);
+}
+
+/* 🧠 ТЕСТ */
+function showTest(){
+document.body.innerHTML=`
+<div class="panel">
+<h2>Мини-тест</h2>
+
+<div class="question">1. Large tech companies tend to encourage staff to solve problems in teams that’s why the <b>(...)</b>-plan office has become popular once more.</div>
+<div class="answers">
+<div class="option" data-correct="false">internal</div>
+<div class="option" data-correct="false">flexible</div>
+<div class="option" data-correct="false">equal</div>
+<div class="option" data-correct="true">open</div>
+</div>
+
+<div class="question">2. Companies such as Apple, Amazon and Google were all <b>(...)</b> of building businesses using technology.</div>
+<div class="answers">
+<div class="option" data-correct="false">motivators</div>
+<div class="option" data-correct="true">innovators</div>
+<div class="option" data-correct="false">disruptors</div>
+<div class="option" data-correct="false">analysts</div>
+</div>
+
+<div class="question">3. When applying for a job, potential employees look for good career <b>(...)</b>.</div>
+<div class="answers">
+<div class="option" data-correct="false">delivery</div>
+<div class="option" data-correct="true">development</div>
+<div class="option" data-correct="false">induction</div>
+<div class="option" data-correct="false">benchmarking</div>
+</div>
+
+<div class="question">4. Many companies look for more than just excellent qualifications and a good skills <b>(...)</b>.</div>
+<div class="answers">
+<div class="option" data-correct="false">method</div>
+<div class="option" data-correct="false">motivation</div>
+<div class="option" data-correct="true">set</div>
+<div class="option" data-correct="false">rapport</div>
+</div>
+
+<button onclick="validateTest()">Продолжить</button><br>
+<button class="small-btn" onclick="showGift()">Я шлёпка, мне ещё учиться и учиться</button>
+</div>`;
+
+document.querySelectorAll('.option').forEach(o=>{
+ o.onclick=()=>{
+  let parent=o.parentElement;
+  parent.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));
+  o.classList.add('selected');
+ };
+});
+}
+
+function validateTest(){
+ let ok=true;
+ document.querySelectorAll('.answers').forEach(a=>{
+  const s=a.querySelector('.selected');
+  if(!s || s.dataset.correct!=='true') ok=false;
+ });
+ if(ok) showGift();
+ else document.querySelectorAll('.option').forEach(o=>o.classList.remove('selected'));
+}
+
+/* 🎁 */
+function showGift(){
+ document.body.innerHTML=`
+ <div class="panel">
+ <h2 style="text-align:center">Ваш подарок</h2>
+ <div class="gift" onclick="explode()">🎁</div>
+ </div>`;
+}
+
+function explode(){
+ document.body.innerHTML='';
+ for(let i=0;i<70;i++){
+  let s=document.createElement('div');
+  s.className='spark';
+  s.textContent='✨';
+  s.style.left=Math.random()*100+'vw';
+  s.style.top='-10px';
+  document.body.appendChild(s);
+ }
+ setTimeout(()=>{
+ document.body.innerHTML=`
+ <div class="panel final-box">
+ <h1>Для вас подарок! 🎄</h1>
+ <p>
+ 4 месяца занятий английским языком<br>
+ от онлайн-школы <strong>London-Express</strong>
+ </p>
+ <div class="highlight">
+ + дополнительно 10 занятий в Speaking Club
+ </div>
+ </div>`;
+ },3000);
+}
 </script>
 
 </body>

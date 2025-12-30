@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Новогодний квест</title>
+<title>Новогодний подарок</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -15,102 +15,151 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
-    overflow:hidden;
+    min-height:100vh;
+    overflow-x:hidden;
 }
 .panel{
-    background:rgba(0,0,0,.7);
-    padding:35px 40px;
-    border-radius:20px;
-    text-align:center;
+    background:rgba(0,0,0,.75);
+    padding:32px 36px;
+    border-radius:22px;
     max-width:900px;
-    box-shadow:0 0 40px rgba(0,0,0,.8);
+    width:90%;
+    box-shadow:0 0 40px rgba(0,0,0,.85);
     animation:fade 1s ease;
 }
 @keyframes fade{
-    from{opacity:0;transform:scale(.9)}
+    from{opacity:0;transform:scale(.95)}
     to{opacity:1;transform:scale(1)}
+}
+
+/* ❄️ СНЕГ */
+.snow{
+    position:fixed;
+    top:-10px;
+    pointer-events:none;
+    animation:fall linear infinite;
+}
+@keyframes fall{
+    to{transform:translateY(120vh);opacity:0}
+}
+
+/* 🔐 ВХОД */
+.login-title{
+    text-align:center;
+    font-size:24px;
+    letter-spacing:2px;
+    margin-bottom:18px;
 }
 .inputs{
     display:flex;
     justify-content:center;
-    gap:10px;
-    margin-top:15px;
+    gap:12px;
 }
 .inputs input{
-    width:50px;
-    height:60px;
-    font-size:32px;
+    width:58px;
+    height:70px;
+    font-size:34px;
     text-align:center;
-    border-radius:10px;
+    border-radius:12px;
     border:2px solid #9cf;
     background:#012;
     color:#fff;
     text-transform:uppercase;
+    outline:none;
 }
 .inputs input.error{
-    border-color:#f44;
-    background:#400;
+    border-color:#ff4b4b;
+    background:#4a0000;
+}
+
+/* ⏱ */
+.timer{
+    font-size:48px;
+    margin-top:10px;
+}
+
+/* 🧠 ТЕСТ */
+.question{
+    margin-top:28px;
+    font-size:16px;
+    line-height:1.4;
+}
+.answers{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:12px;
 }
 .option{
-    display:inline-block;
-    padding:10px 16px;
-    margin:6px;
+    padding:8px 12px;
+    font-size:14px;
     border-radius:8px;
     border:2px solid #9cf;
     cursor:pointer;
 }
 .correct{background:#1e7f4f;border-color:#1e7f4f}
 .wrong{background:#7f1e1e;border-color:#7f1e1e}
+
 button{
-    margin-top:20px;
+    margin-top:24px;
     padding:12px 18px;
     border:none;
     border-radius:10px;
+    font-size:14px;
     cursor:pointer;
 }
 .small-btn{
     font-size:12px;
     opacity:.7;
+    margin-top:16px;
 }
+
+/* 🎁 */
 .gift{
-    font-size:90px;
+    font-size:100px;
+    text-align:center;
     cursor:pointer;
     animation:pulse 1.5s infinite;
 }
 @keyframes pulse{
     50%{transform:scale(1.1)}
 }
-.snow{
-    position:fixed;
-    top:-10px;
-    animation:fall linear infinite;
-    pointer-events:none;
-}
-@keyframes fall{
-    to{transform:translateY(110vh);opacity:0}
-}
 .spark{
     position:fixed;
     font-size:22px;
     animation:fall 3s linear;
+}
+.final-box{
+    text-align:center;
+}
+.final-box h1{
+    margin-bottom:16px;
+}
+.final-box p{
+    font-size:18px;
+    line-height:1.6;
+}
+.highlight{
+    font-size:22px;
+    margin-top:14px;
+    color:#9cffd1;
 }
 </style>
 </head>
 <body>
 
 <div class="panel" id="login">
-<h2>Пользователь ▢▢▢▢▢▢</h2>
-<div class="inputs">
-<input maxlength="1"><input maxlength="1"><input maxlength="1">
-<input maxlength="1"><input maxlength="1"><input maxlength="1">
-</div>
+    <div class="login-title">ПОЛЬЗОВАТЕЛЬ</div>
+    <div class="inputs">
+        <input maxlength="1"><input maxlength="1"><input maxlength="1">
+        <input maxlength="1"><input maxlength="1"><input maxlength="1">
+    </div>
 </div>
 
 <script>
 /* ❄️ СНЕГ */
-for(let i=0;i<35;i++){
- let s=document.createElement('div');
+for(let i=0;i<40;i++){
+ const s=document.createElement('div');
  s.className='snow';
  s.textContent='❄';
  s.style.left=Math.random()*100+'vw';
@@ -140,7 +189,11 @@ function checkLogin(){
   if(val===correct){
    showTimer();
   }else{
-   inputs.forEach(i=>i.classList.add('error'));
+   inputs.forEach(i=>{
+     i.classList.add('error');
+     i.value='';
+   });
+   inputs[0].focus();
   }
  }
 }
@@ -148,9 +201,9 @@ function checkLogin(){
 /* ⏱ ТАЙМЕР */
 function showTimer(){
  document.body.innerHTML=`
- <div class="panel">
+ <div class="panel" style="text-align:center">
  <h2>Для получения подарка<br>пройдите лёгкий тест</h2>
- <h1 id="t">3</h1>
+ <div class="timer" id="t">3</div>
  </div>`;
  let t=3;
  let i=setInterval(()=>{
@@ -166,36 +219,44 @@ document.body.innerHTML=`
 <div class="panel">
 <h2>Мини-тест</h2>
 
-<p>1. ... the <b>(...)</b>-plan office</p>
-<div data-q="1">
-<span class="option" data-a="wrong">internal</span>
-<span class="option" data-a="wrong">flexible</span>
-<span class="option" data-a="wrong">equal</span>
-<span class="option" data-a="correct">open</span>
+<div class="question">
+1. Large tech companies tend to encourage staff to solve problems in teams that’s why the <b>(...)</b>-plan office has become popular once more.
+</div>
+<div class="answers" data-q="1">
+<div class="option" data-a="wrong">internal</div>
+<div class="option" data-a="wrong">flexible</div>
+<div class="option" data-a="wrong">equal</div>
+<div class="option" data-a="correct">open</div>
 </div>
 
-<p>2. Companies such as Apple ...</p>
-<div data-q="2">
-<span class="option" data-a="wrong">motivators</span>
-<span class="option" data-a="correct">innovators</span>
-<span class="option" data-a="wrong">disruptors</span>
-<span class="option" data-a="wrong">analysts</span>
+<div class="question">
+2. Companies such as Apple, Amazon and Google were all <b>(...)</b> of building businesses using technology.
+</div>
+<div class="answers" data-q="2">
+<div class="option" data-a="wrong">motivators</div>
+<div class="option" data-a="correct">innovators</div>
+<div class="option" data-a="wrong">disruptors</div>
+<div class="option" data-a="wrong">analysts</div>
 </div>
 
-<p>3. Good career <b>(...)</b></p>
-<div data-q="3">
-<span class="option" data-a="wrong">delivery</span>
-<span class="option" data-a="correct">development</span>
-<span class="option" data-a="wrong">induction</span>
-<span class="option" data-a="wrong">benchmarking</span>
+<div class="question">
+3. When applying for a job, potential employees look for good career <b>(...)</b>.
+</div>
+<div class="answers" data-q="3">
+<div class="option" data-a="wrong">delivery</div>
+<div class="option" data-a="correct">development</div>
+<div class="option" data-a="wrong">induction</div>
+<div class="option" data-a="wrong">benchmarking</div>
 </div>
 
-<p>4. Good skills <b>(...)</b></p>
-<div data-q="4">
-<span class="option" data-a="wrong">method</span>
-<span class="option" data-a="wrong">motivation</span>
-<span class="option" data-a="correct">set</span>
-<span class="option" data-a="wrong">rapport</span>
+<div class="question">
+4. Many companies look for more than just excellent qualifications and a good skills <b>(...)</b>.
+</div>
+<div class="answers" data-q="4">
+<div class="option" data-a="wrong">method</div>
+<div class="option" data-a="wrong">motivation</div>
+<div class="option" data-a="correct">set</div>
+<div class="option" data-a="wrong">rapport</div>
 </div>
 
 <button id="next" disabled>Продолжить</button><br>
@@ -217,18 +278,18 @@ document.querySelectorAll('.option').forEach(o=>{
 });
 }
 
-/* 🎁 ПОДАРОК */
+/* 🎁 */
 function showGift(){
  document.body.innerHTML=`
  <div class="panel">
- <h2>Ваш подарок</h2>
+ <h2 style="text-align:center">Ваш подарок</h2>
  <div class="gift" onclick="explode()">🎁</div>
  </div>`;
 }
 
 function explode(){
  document.body.innerHTML='';
- for(let i=0;i<60;i++){
+ for(let i=0;i<70;i++){
   let s=document.createElement('div');
   s.className='spark';
   s.textContent='✨';
@@ -238,12 +299,15 @@ function explode(){
  }
  setTimeout(()=>{
  document.body.innerHTML=`
- <div class="panel">
- <h1>Для вас подарок!</h1>
- <p><strong>
- 4 месяца занятий английским языком от онлайн-школы London-Express!<br>
+ <div class="panel final-box">
+ <h1>Для вас подарок! 🎄</h1>
+ <p>
+ 4 месяца занятий английским языком<br>
+ от онлайн-школы <strong>London-Express</strong>
+ </p>
+ <div class="highlight">
  + дополнительно 10 занятий в Speaking Club
- </strong></p>
+ </div>
  </div>`;
  },3000);
 }

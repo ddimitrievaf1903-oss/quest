@@ -2,20 +2,20 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Новогодний подарок</title>
+<title>Новогодний вход</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* {
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
 }
 
 body{
     margin:0;
     font-family:Arial, sans-serif;
-    background: linear-gradient(#00111f, #022b45);
-    color:#ffffff;
+    background:linear-gradient(#00111f,#022b45);
+    color:#fff;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -24,74 +24,65 @@ body{
 }
 
 /* ❄️ СНЕГ */
-.snowflake {
-    position: fixed;
-    top: -10px;
-    color: white;
-    animation: fall linear infinite;
+.snowflake{
+    position:fixed;
+    top:-10px;
+    color:white;
+    animation:fall linear infinite;
     pointer-events:none;
 }
-@keyframes fall {
-    to { transform: translateY(110vh); }
+@keyframes fall{
+    to{transform:translateY(110vh);}
 }
 
 /* 🎄 ПАНЕЛЬ */
 .panel{
-    background: rgba(0,0,0,0.6);
-    border:2px solid rgba(255,255,255,0.2);
-    padding:30px 35px;
-    border-radius:18px;
-    box-shadow:0 0 40px rgba(0,0,0,0.8);
+    background:rgba(0,0,0,0.65);
+    border:2px solid rgba(255,255,255,0.25);
+    padding:35px 40px;
+    border-radius:20px;
     text-align:center;
-    max-width:720px;
-    animation: fadeIn 1.2s ease;
+    box-shadow:0 0 45px rgba(0,0,0,0.8);
+    animation:fade 1s ease;
 }
-
-@keyframes fadeIn {
-    from { opacity:0; transform: scale(0.9); }
-    to { opacity:1; transform: scale(1); }
+@keyframes fade{
+    from{opacity:0; transform:scale(0.9);}
+    to{opacity:1; transform:scale(1);}
 }
 
 h1{
-    letter-spacing:4px;
+    margin-bottom:25px;
+    letter-spacing:3px;
+}
+
+/* 👤 ВВОД */
+.user-line{
+    font-size:22px;
     margin-bottom:20px;
 }
 
-/* 🔤 БУКВЫ */
-.letters span{
-    display:inline-flex;
+.inputs{
+    display:flex;
     justify-content:center;
-    align-items:center;
-    background:#123;
-    border:1px solid #6cf;
-    border-radius:12px;
-    width:60px;
+    gap:10px;
+}
+
+.inputs input{
+    width:50px;
     height:60px;
-    margin:8px;
     font-size:32px;
-    cursor:pointer;
-    user-select:none;
-    transition: transform 0.15s, background 0.15s;
+    text-align:center;
+    border-radius:10px;
+    border:2px solid #9cf;
+    background:#012;
+    color:#fff;
+    outline:none;
+    text-transform:uppercase;
 }
 
-.letters span:active{
-    transform: scale(0.9);
-    background:#1a4b7a;
-}
-
-/* 🧩 ЯЧЕЙКИ */
-.slots{
-    margin-top:25px;
-}
-.slot{
-    display:inline-flex;
-    justify-content:center;
-    align-items:center;
-    width:58px;
-    height:58px;
-    border:2px dashed #9cf;
-    margin:6px;
-    font-size:32px;
+.inputs input:focus{
+    border-color:#fff;
+    box-shadow:0 0 10px #9cf;
 }
 
 /* 🎁 ФИНАЛ */
@@ -102,86 +93,74 @@ h1{
 .gift-img{
     margin-top:25px;
     max-width:100%;
-    border-radius:16px;
+    border-radius:18px;
     box-shadow:0 0 25px rgba(255,255,255,0.4);
 }
 </style>
 </head>
 <body>
 
-<!-- 🎶 МУЗЫКА -->
-<audio id="music" loop>
-    <source src="https://cdn.pixabay.com/audio/2022/12/20/audio_3b6e7cfe5f.mp3" type="audio/mpeg">
-</audio>
+<div class="panel" id="login">
+    <h1>ВХОД</h1>
 
-<div class="panel" id="game">
-    <h1>ПАРОЛЬ</h1>
-
-    <div class="letters">
-        <span>л</span>
-        <span>ё</span>
-        <span>а</span>
-        <span>п</span>
-        <span>ш</span>
+    <div class="user-line">
+        Пользователь ▢▢▢▢▢▢
     </div>
 
-    <div class="slots">
-        <div class="slot"></div>
-        <div class="slot"></div>
-        <div class="slot"></div>
-        <div class="slot"></div>
-        <div class="slot"></div>
+    <div class="inputs">
+        <input maxlength="1" inputmode="text">
+        <input maxlength="1" inputmode="text">
+        <input maxlength="1" inputmode="text">
+        <input maxlength="1" inputmode="text">
+        <input maxlength="1" inputmode="text">
+        <input maxlength="1" inputmode="text">
     </div>
 </div>
 
 <script>
-const letters = document.querySelectorAll('.letters span');
-const slots = document.querySelectorAll('.slot');
-const music = document.getElementById('music');
-let index = 0;
-let musicStarted = false;
+const inputs = document.querySelectorAll('.inputs input');
+const correct = 'ШЛЁПКА';
 
-function placeLetter(letter){
-    if(!musicStarted){
-        music.play().catch(()=>{});
-        musicStarted = true;
-    }
+inputs[0].focus();
 
-    if(index < slots.length){
-        slots[index].textContent = letter.textContent;
-        index++;
+inputs.forEach((input, i)=>{
+    input.addEventListener('input', ()=>{
+        input.value = input.value.toUpperCase();
+
+        if(input.value && i < inputs.length - 1){
+            inputs[i+1].focus();
+        }
         check();
-    }
-}
+    });
 
-letters.forEach(letter=>{
-    letter.addEventListener('click', ()=>placeLetter(letter));
-    letter.addEventListener('touchstart', e=>{
-        e.preventDefault();
-        placeLetter(letter);
-    }, {passive:false});
+    input.addEventListener('keydown', e=>{
+        if(e.key === 'Backspace' && !input.value && i > 0){
+            inputs[i-1].focus();
+        }
+    });
 });
 
 function check(){
-    let result = '';
-    slots.forEach(s => result += s.textContent);
-    if(result === 'шлёпа'){
+    let value = '';
+    inputs.forEach(i=>value += i.value);
+
+    if(value === correct){
         document.body.innerHTML = `
         <div class="panel success">
             🎄 Я поздравляю тебя с Новым годом!<br><br>
-            Я хочу подарить тебе особенный подарок:<br><br>
+            Я хочу подарить тебе хороший подарок:<br><br>
             <strong>4 месяца занятий английским языком<br>
             в мини-группе от London-Express</strong> 🎁<br><br>
 
             <img class="gift-img"
             src="https://images.unsplash.com/photo-1607082349566-187342175e2f"
-            alt="Новогодний подарок">
+            alt="Подарок">
         </div>`;
     }
 }
 
 /* ❄️ СНЕГ */
-for(let i=0;i<35;i++){
+for(let i=0;i<40;i++){
     const s=document.createElement('div');
     s.className='snowflake';
     s.textContent='❄';
